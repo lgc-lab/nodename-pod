@@ -1,0 +1,19 @@
+#创建一个简单的pod 运行一个容器 容器镜像为：nginx
+apiVersion: v1  #api 版本
+kind: Pod      #创建的资源
+metadata:
+  name: nginx   #pod的名字
+  namespace: default  #命名空间
+  labels:
+    apps: nginx   #Pod具有的标签
+spec:
+  nodeName: k8s-node2 #指定node的name,具有最高优先级
+  containers:
+    - name: nginx-server  #pod容器里的名字
+      image: nginx   #容器镜像
+      imagePullPolicy: IfNotPresent  #容器镜像下载策略  
+      ports:     #一个列表，一个或多个端口对象组成（暴露端口）
+      - name: nginx    #端口名称标识
+        containerPort: 80  #必选字段，ip上暴露的容器端口
+        protocol: TCP    #传输协议 默认tcp
+        hostPort: 8123   #主机端口 接收请求nat机制转发至containerPort指定的端口
